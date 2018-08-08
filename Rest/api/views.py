@@ -2,6 +2,7 @@
 from rest_framework import generics
 from .serializers import BucketlistSerializer
 from .models import Bucketlist
+from rest_framework import permissions
 
 # core django imports
 from django.shortcuts import render
@@ -20,7 +21,8 @@ class CreateView(generics.ListCreateAPIView):
         '''
         Save the post data when creating a new bucketlist
         '''
-        serializer.save()
+        serializer.save(owner=self.request.user) 
+        permission_classes = (permissions.IsAuthenticated,)
 
 class DetailsView(generics.RetrieveUpdateDestroyAPIView):
     '''

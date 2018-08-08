@@ -7,6 +7,9 @@ class Bucketlist(models.Model):
     '''
 
     name = models.CharField(max_length = 225, blank = False, unique = True )
+    owner = models.ForeignKey('auth.User',  # ADD THIS FIELD
+    related_name='bucketlists', 
+    on_delete=models.CASCADE)
     date_created = models.DateField(auto_now_add = True)
     date_modified = models.DateField(auto_now = True)
 
