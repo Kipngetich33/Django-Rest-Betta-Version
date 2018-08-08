@@ -1,5 +1,12 @@
 from django.db import models
 
+# imports for the auth_token 
+from django.db.models.signals import post_save
+from django.contrib.auth.models import User
+from rest_framework.authtoken.models import Token
+from django.dispatch import receiver
+
+
 # Create your models here.
 class Bucketlist(models.Model):
     '''
@@ -8,7 +15,7 @@ class Bucketlist(models.Model):
 
     name = models.CharField(max_length = 225, blank = False, unique = True )
     owner = models.ForeignKey('auth.User',  # ADD THIS FIELD
-    related_name='bucketlists', 
+    related_name='bucketlists',
     on_delete=models.CASCADE)
     date_created = models.DateField(auto_now_add = True)
     date_modified = models.DateField(auto_now = True)
@@ -19,4 +26,10 @@ class Bucketlist(models.Model):
         instance
         '''
         return "{}".format(self.name)
+
+
+# Reciever that handles token creation immidiately a new user is created
+def create_auth_token(sender,instance = None, create = False, **kwargs):
+    if created:
+        Token.objects.create(user=instance)
 
