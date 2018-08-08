@@ -1,5 +1,6 @@
 # third party lib  imports
 from rest_framework import generics
+from .permissions import IsOwner
 from .serializers import BucketlistSerializer
 from .models import Bucketlist
 from rest_framework import permissions
@@ -16,6 +17,7 @@ class CreateView(generics.ListCreateAPIView):
 
     queryset = Bucketlist.objects.all()
     serializer_class  = BucketlistSerializer
+    permission_classes = (permissions.IsAuthenticated, IsOwner)
 
     def perform_create(self,serializer):
         '''
@@ -28,6 +30,7 @@ class DetailsView(generics.RetrieveUpdateDestroyAPIView):
     '''
     This is the class that handles the GET, PUT  and DELETE requests
     '''
+    permission_classes = (permissions.IsAuthenticated, IsOwner)
 
     queryset = Bucketlist.objects.all()
     serializer_class = BucketlistSerializer
